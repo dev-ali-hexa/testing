@@ -88,15 +88,6 @@
         }
         @keyframes floatParticle { 0% { transform: translateY(100vh) translateX(0); opacity: 0; } 50% { opacity: 0.4; } 100% { transform: translateY(-100vh) translateX(50px); opacity: 0; } }
         
-        /* Theme Toggle */
-        .theme-toggle {
-            position: fixed; top: 100px; right: 30px; width: 50px; height: 50px;
-            border-radius: 50%; background: var(--gradient); border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
-            color: white; box-shadow: var(--shadow); transition: var(--transition); z-index: 1000;
-        }
-        .theme-toggle:hover { transform: scale(1.1) rotate(180deg); }
-        
         /* Loader */
         .loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg);
@@ -324,10 +315,10 @@
             margin-top: 15px;
         }
         .table-scroll-wrapper {
-            overflow-x: auto; 
+            overflow-x: auto; /* Enables horizontal scroll on mobile */
             -webkit-overflow-scrolling: touch;
         }
-        .data-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        .data-table { width: 100%; border-collapse: collapse; min-width: 600px; /* Force scroll on mobile */ }
         .data-table th { background: rgba(0,0,0,0.3); padding: 15px; text-align: left; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
         .data-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text); }
         .data-table tr:hover { background: rgba(255,255,255,0.05); cursor: pointer; }
@@ -396,31 +387,78 @@
         .notification.success { border-left: 5px solid var(--success); }
         .notification.error { border-left: 5px solid var(--danger); }
 
-        /* Chat */
+        /* Chat & Fixes */
         .chat-fab { position: fixed; right: 15px; bottom: 15px; width: 50px; height: 50px; border-radius: 50%; background: var(--gradient); color: #fff; display:flex; align-items:center; justify-content:center; z-index: 4000; box-shadow: 0 8px 20px rgba(0,0,0,0.3); cursor:pointer; font-size: 20px; }
         
-        /* Mobile Responsive Chat */
+        /* Fixed Chat Modal CSS with Scroll Fix */
         .chat-modal { 
             position: fixed; 
-            right: 10px; bottom: 80px; left: 10px; 
-            width: auto; height: 70vh; 
-            background: var(--card); 
-            border-radius: 12px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5); 
-            z-index: 4001; 
+            z-index: 9999; /* High z-index */
             display: none; 
             flex-direction: column; 
-            overflow: hidden; 
+            background: var(--card); 
             border: var(--glass-border);
-        }
-        @media(min-width: 768px) {
-            .chat-modal { width: 360px; right: 20px; left: auto; bottom: 90px; height: 480px; }
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden; /* Contains inner scroll */
         }
 
-        .chat-header { padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; align-items:center; flex-shrink: 0; }
-        .chat-body { flex:1; padding: 10px; overflow-y: auto; display:flex; flex-direction:column; gap:8px; -webkit-overflow-scrolling: touch; }
-        .chat-input { padding: 10px; border-top: 1px solid rgba(255,255,255,0.04); display:flex; gap:8px; flex-shrink: 0; background: var(--card); }
-        .chat-input input { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:var(--text); font-size: 14px; }
+        /* Desktop Chat Layout */
+        @media(min-width: 768px) {
+            .chat-modal {
+                right: 20px; bottom: 90px; left: auto; top: auto;
+                width: 360px; height: 480px; border-radius: 12px;
+            }
+        }
+
+        /* Mobile Chat Layout (Bottom Sheet) */
+        @media(max-width: 768px) {
+            .chat-modal {
+                top: auto; left: 0; right: 0; bottom: 0; 
+                width: 100%; height: 80vh; 
+                border-radius: 20px 20px 0 0;
+                transform: translateY(100%); /* Hidden state */
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .chat-modal.show-mobile {
+                transform: translateY(0);
+            }
+            /* Specific fix for mobile send button size */
+            .chat-input .btn {
+                width: auto !important;
+                padding: 8px 12px !important;
+                font-size: 13px !important;
+            }
+        }
+
+        /* Common Chat Styles */
+        .chat-header { padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; align-items:center; flex-shrink: 0; background: var(--card); }
+        .chat-body { 
+            flex:1; 
+            padding: 10px; 
+            overflow-y: auto; 
+            display:flex; 
+            flex-direction:column; 
+            gap:8px; 
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain; /* THIS FIXES THE BACKGROUND SCROLL BUG */
+        }
+        .chat-input { 
+            padding: 10px; 
+            border-top: 1px solid rgba(255,255,255,0.04); 
+            display:flex; 
+            gap:8px; 
+            flex-shrink: 0; 
+            background: var(--card); 
+        }
+        .chat-input input { 
+            flex:1; 
+            padding:10px; 
+            border-radius:8px; 
+            border:1px solid rgba(255,255,255,0.06); 
+            background: rgba(255,255,255,0.02); 
+            color:var(--text); 
+            font-size: 14px; 
+        }
         .chat-msg.user { align-self: flex-end; background: linear-gradient(90deg, rgba(74,105,255,0.14), rgba(139,92,246,0.08)); padding:8px 12px; border-radius:12px; max-width:80%; }
         .chat-msg.admin { align-self: flex-start; background: rgba(255,255,255,0.02); padding:8px 12px; border-radius:12px; max-width:80%; }
 
@@ -445,6 +483,7 @@
                 background: rgba(10, 14, 39, 0.98); backdrop-filter: blur(10px);
                 flex-direction: column; padding: 20px; border-bottom: 1px solid var(--glass-border);
                 gap: 10px;
+                z-index: 999;
             }
             nav ul.active { display: flex; animation: slideDown 0.3s ease; }
             @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -459,7 +498,6 @@
             .btn-danger, .btn-dark { width: auto; min-width: 100px; }
             
             #userNotesModal > div { width: 95%; margin: 10px auto; padding: 15px; max-height: 90vh; overflow-y: auto; }
-            .theme-toggle { top: auto; bottom: 80px; right: 75px; width: 40px; height: 40px; font-size: 16px; }
         }
 
         @media(max-width: 400px) {
@@ -475,8 +513,6 @@
     <div class="bg-blob blob-2"></div>
     <div class="bg-blob blob-3"></div>
     <div class="particles" id="particles"></div>
-    
-    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
     
     <div class="loader" id="loader">
         <div class="loader-content">
@@ -558,8 +594,8 @@
 
     <!-- Support Chat -->
     <div class="chat-fab" title="Support" onclick="toggleSupportChat()"><i class="fas fa-comments"></i></div>
-    <div id="supportChatModal" class="chat-modal" style="display:none; flex-direction:column;">
-        <div class="chat-header"><div><strong>Support</strong><div style="font-size:12px;color:var(--text-muted)">Get help from admin</div></div><div><button class="btn btn-dark" onclick="toggleSupportChat()" style="padding: 5px 10px;">Close</button></div></div>
+    <div id="supportChatModal" class="chat-modal">
+        <div class="chat-header"><div><strong>Support</strong><div style="font-size:12px;color:var(--text-muted)">Get help from admin</div></div><div><button class="btn btn-dark" onclick="toggleSupportChat()" style="padding: 5px 10px; width:auto;">Close</button></div></div>
         <div id="supportChatBody" class="chat-body"></div>
         <div class="chat-input"><input id="supportChatInput" placeholder="Type your message..." onkeydown="if(event.key==='Enter'){ sendSupportMessage(); }"><button class="btn btn-main" onclick="sendSupportMessage()">Send</button></div>
     </div>
@@ -569,11 +605,11 @@
         <div style="width:95%; max-width:760px; margin:40px auto; background:var(--card); border-radius:12px; padding:20px; border:var(--glass-border);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <h3 id="modalUserName" style="font-size:20px;">User Notes</h3>
-                <button class="btn btn-dark" onclick="closeUserNotesModal()" style="padding: 5px 10px;">Close</button>
+                <button class="btn btn-dark" onclick="closeUserNotesModal()" style="padding: 5px 10px; width:auto;">Close</button>
             </div>
             <div id="modalUserInfo" style="margin-bottom:12px; color:var(--text-muted); font-size:14px;"></div>
             <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap;">
-                <button id="modalBlockBtn" class="btn btn-danger" onclick="adminToggleBlock(currentModalUser)" style="font-size:12px;">Block</button>
+                <button id="modalBlockBtn" class="btn btn-danger" onclick="adminToggleBlock(currentModalUser)" style="font-size:12px; width:auto;">Block</button>
             </div>
             <h4 style="margin-top:6px;">Notes</h4>
             <div id="modalUserNotesList"></div>
@@ -591,7 +627,6 @@
                     <h1 class="hero-title">Master the <br>Future of <span style="color: var(--accent)">Tech</span></h1>
                     <p class="hero-desc">Access premium PDFs, solve competitive quizzes, and track your progress with our advanced analytics dashboard. Start your journey today.</p>
                     <div class="hero-buttons">
-                        <!-- Added glow-btn class here -->
                         <button class="btn btn-main glow-btn" onclick="checkAuthAndRedirect('library')"><i class="fas fa-book-open"></i> Explore Library</button>
                         <button class="btn btn-dark" onclick="checkAuthAndRedirect('quiz')"><i class="fas fa-play"></i> Start Quiz</button>
                     </div>
@@ -726,8 +761,8 @@
                 <img id="profilePic" src="" alt="Profile" class="profile-pic-large">
                 <div style="margin-top:10px; display:flex; gap:10px; align-items:center; justify-content:center; width:100%;">
                     <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="uploadAvatar(event)">
-                    <button class="btn btn-main" onclick="document.getElementById('avatarFile').click()" style="font-size:12px; padding:8px 12px;"><i class="fas fa-camera"></i> Upload</button>
-                    <button class="btn btn-dark" onclick="removeAvatar()" style="font-size:12px; padding:8px 12px;"><i class="fas fa-trash"></i> Remove</button>
+                    <button class="btn btn-main" onclick="document.getElementById('avatarFile').click()" style="font-size:12px; padding:8px 12px; width:auto;"><i class="fas fa-camera"></i> Upload</button>
+                    <button class="btn btn-dark" onclick="removeAvatar()" style="font-size:12px; padding:8px 12px; width:auto;"><i class="fas fa-trash"></i> Remove</button>
                 </div>
                 <div style="flex: 1; text-align: center;" class="profile-info-side">
                     <h2 id="profileName" style="font-size: 20px;">User Name</h2>
@@ -805,7 +840,7 @@
                                 <div id="supportConvMessages" style="flex:1; overflow:auto; padding:6px; background: rgba(255,255,255,0.01); border-radius:8px;"></div>
                                 <div style="margin-top:10px; display:flex; gap:8px;">
                                     <input id="supportReplyInput" placeholder="Write a reply..." style="flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:var(--text); font-size:14px;">
-                                    <button class="btn btn-main" onclick="adminSendSupportReply()">Send</button>
+                                    <button class="btn btn-main" onclick="adminSendSupportReply()" style="width:auto;">Send</button>
                                 </div>
                             </div>
                         </div>
@@ -891,16 +926,12 @@
         let isAdminLoggedIn = false;
         let currentQuizIndex = 0;
         let quizQuestionsData = [];
-        let allPdfsData = []; // Store all PDFs locally for fast search
+        let allPdfsData = []; 
 
         // --- UI ---
         window.addEventListener('load', () => {
             createParticles();
             setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
-        });
-
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
         });
 
         document.getElementById('menuToggle').addEventListener('click', () => {
@@ -1069,7 +1100,6 @@
                     document.getElementById('pdfList').innerHTML = '<tr><td colspan="2">No PDFs</td></tr>'; 
                     return; 
                 }
-                // Store data globally for search
                 allPdfsData = [];
                 Object.keys(data).forEach(key => {
                     allPdfsData.push({ ...data[key], key: key });
@@ -1077,11 +1107,10 @@
                 renderLibrary(allPdfsData);
             });
 
-            // Add search listener
             const searchInput = document.getElementById('searchInput');
-            searchInput.value = ''; // reset
-            searchInput.removeEventListener('input', filterLibrary); // remove old
-            searchInput.addEventListener('input', filterLibrary); // add new
+            searchInput.value = ''; 
+            searchInput.removeEventListener('input', filterLibrary); 
+            searchInput.addEventListener('input', filterLibrary); 
         }
 
         function renderLibrary(data) {
@@ -1092,7 +1121,6 @@
                 return; 
             }
             data.forEach(item => {
-                // Entire row is clickable
                 list.innerHTML += `
                     <tr onclick="window.open('${item.url}', '_blank')" style="cursor: pointer;">
                         <td><strong>${item.title}</strong></td>
@@ -1182,7 +1210,7 @@
                 Object.keys(data).reverse().forEach(nid => {
                     const n = data[nid];
                     const date = new Date(n.updatedAt || n.createdAt || Date.now()).toLocaleString();
-                    list.innerHTML += `<div class="card" style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><strong style="font-size:16px;">${escapeHtml(n.title||'Untitled')}</strong><small style="color:var(--text-muted);font-size:12px;">${date}</small></div><p style="white-space:pre-wrap;font-size:14px;">${escapeHtml(n.content||'')}</p><div style="display:flex;gap:8px;margin-top:10px;"><button class="btn btn-dark" onclick="editMyNote('${nid}')" style="font-size:12px;padding:8px 12px;">Edit</button><button class="btn btn-danger" onclick="deleteMyNote('${nid}')" style="font-size:12px;padding:8px 12px;">Delete</button></div></div>`;
+                    list.innerHTML += `<div class="card" style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><strong style="font-size:16px;">${escapeHtml(n.title||'Untitled')}</strong><small style="color:var(--text-muted);font-size:12px;">${date}</small></div><p style="white-space:pre-wrap;font-size:14px;">${escapeHtml(n.content||'')}</p><div style="display:flex;gap:8px;margin-top:10px;"><button class="btn btn-dark" onclick="editMyNote('${nid}')" style="font-size:12px;padding:8px 12px; width:auto;">Edit</button><button class="btn btn-danger" onclick="deleteMyNote('${nid}')" style="font-size:12px;padding:8px 12px; width:auto;">Delete</button></div></div>`;
                 });
             });
         }
@@ -1478,7 +1506,7 @@
                 Object.keys(data).reverse().forEach(nid => {
                     const n = data[nid];
                     const date = new Date(n.updatedAt || n.createdAt || Date.now()).toLocaleString();
-                    container.innerHTML += `<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong style="font-size:14px;">${escapeHtml(n.title||'Untitled')}</strong><small style="color:var(--text-muted);font-size:11px;">${date}</small></div><p style="white-space:pre-wrap;font-size:13px;">${escapeHtml(n.content||'')}</p><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn btn-danger" onclick="adminDeleteNote('${uid}','${nid}')" style="font-size:11px;padding:5px 8px;">Delete</button></div></div>`;
+                    container.innerHTML += `<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong style="font-size:14px;">${escapeHtml(n.title||'Untitled')}</strong><small style="color:var(--text-muted);font-size:11px;">${date}</small></div><p style="white-space:pre-wrap;font-size:13px;">${escapeHtml(n.content||'')}</p><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn btn-danger" onclick="adminDeleteNote('${uid}','${nid}')" style="font-size:11px;padding:5px 8px; width:auto;">Delete</button></div></div>`;
                 });
             });
         }
@@ -1511,11 +1539,20 @@
             const modal = document.getElementById('supportChatModal');
             if(!modal) return;
             if(modal.style.display === 'flex') {
-                modal.style.display = 'none';
+                // Close animation
+                if(window.innerWidth <= 768) {
+                    modal.classList.remove('show-mobile');
+                    setTimeout(() => modal.style.display = 'none', 300);
+                } else {
+                    modal.style.display = 'none';
+                }
+                
                 if(window._supportUnsub) { window._supportUnsub.off(); window._supportUnsub = null; }
             } else {
                 if(!auth.currentUser) { showNotification('Please login to chat', 'info'); show('auth'); return; }
                 modal.style.display = 'flex';
+                // Slight delay to allow display flex to apply before adding class for transition
+                setTimeout(() => modal.classList.add('show-mobile'), 10);
                 loadSupportConversation(auth.currentUser.uid);
             }
         }
