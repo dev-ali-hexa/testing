@@ -22,7 +22,7 @@
     
     <style>
         :root {
-            --bg: #0a0e27;
+            --bg: #050714;
             --card: #151932;
             --card-hover: #1e2444;
             --accent: #f5c84c;
@@ -41,12 +41,13 @@
             --sidebar-width: 260px;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+            --neon-blue: #00f3ff;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body {
-            background-color: #050714;
+            background-color: var(--bg);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
@@ -54,7 +55,7 @@
             font-size: 16px;
         }
         
-        /* ==================== BACKGROUND ==================== */
+        /* ==================== BACKGROUND DECORATION ==================== */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, rgba(118, 75, 162, 0.15), transparent 60%);
@@ -113,7 +114,7 @@
             background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; text-decoration: none;
         }
         .logo h5 {
-            font-size: 10px; color: var(--text-muted); font-weight: 500; letter-spacing: 1px; margin: 0; line-height: 1.2;
+            font-size: 10px; color: var(--text-muted); font-weight: 500; letter-spacing: 1px; margin: 0; line-height:1.2;
             background: none; -webkit-text-fill-color: var(--text-muted); display: none;
         }
         @media(min-width: 480px) { .logo h5 { display: block; } }
@@ -145,6 +146,31 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        /* ================= DECORATION ================= */
+        /* Announcement Bar */
+        .announcement-bar {
+            width: 90%; max-width: 1200px; margin: 0 auto 30px;
+            background: rgba(20, 25, 50, 0.8); border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px 20px;
+            display: flex; align-items: center; overflow: hidden;
+            box-shadow: 0 0 20px rgba(74, 105, 255, 0.2); backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .announcement-icon {
+            color: var(--accent); font-size: 20px; margin-right: 15px; flex-shrink: 0;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .marquee-wrapper {
+            flex-grow: 1; white-space: nowrap; overflow: hidden; position: relative;
+        }
+        .marquee-content {
+            display: inline-block; color: var(--text); font-size: 14px; font-weight: 500;
+            animation: marquee 20s linear infinite; padding-left: 100%;
+        }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
         /* General UI */
         .btn {
             padding: 12px 24px; border: none; border-radius: 12px; cursor: pointer;
@@ -155,7 +181,6 @@
         .btn-main { background: var(--gradient); color: #fff; box-shadow: 0 10px 20px rgba(74, 105, 255, 0.3); }
         .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(74, 105, 255, 0.4); }
         
-        /* Glow Effect for Explore Button */
         .glow-btn {
             background-size: 200% auto;
             animation: glowMove 3s linear infinite;
@@ -168,13 +193,14 @@
         .btn-dark { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); }
         .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
         .btn-danger:hover { background: var(--danger); color: #fff; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; width: auto; }
 
         input, textarea, select {
             width: 100%; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px; background: rgba(255, 255, 255, 0.03);
             color: var(--text); font-size: 16px; transition: var(--transition);
         }
-        input:focus, textarea:focus {
+        input:focus, textarea:focus, select:focus {
             outline: none; background: rgba(255, 255, 255, 0.08); border-color: var(--accent);
         }
 
@@ -182,6 +208,7 @@
             background: rgba(20, 25, 50, 0.6); backdrop-filter: blur(15px);
             padding: 25px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             border: var(--glass-border); transition: var(--transition);
+            margin-bottom: 20px;
         }
         .card:hover { transform: translateY(-5px); border-color: rgba(255, 255, 255, 0.2); }
 
@@ -196,8 +223,14 @@
             perspective: 1000px; flex-wrap: wrap;
         }
 
-        .hero-text {
-            flex: 1; min-width: 300px; padding-right: 0; z-index: 2; text-align: center;
+        /* Glass Background for Hero Text */
+        .hero-text-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; padding: 40px;
+            z-index: 2; text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         }
 
         .hero-badge {
@@ -212,6 +245,7 @@
             margin-bottom: 20px;
             background: var(--gradient-text);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
         }
 
         .hero-desc {
@@ -238,7 +272,7 @@
         .fc-sub-1, .fc-sub-2 { display: none; }
         
         @media(min-width: 768px) {
-            .hero-text { padding-right: 50px; text-align: left; }
+            .hero-text-glass { padding: 50px; text-align: left; }
             .hero-desc { margin-left: 0; }
             .hero-buttons { justify-content: flex-start; }
             .fc-sub-1 { display: flex; width: 160px; height: 160px; top: 10%; left: -10%; z-index: 2; animation-delay: 1s; }
@@ -256,7 +290,7 @@
             50% { transform: translateY(-20px); }
         }
 
-        /* Stats */
+        /* Stats (Neon Holographic) */
         .holo-stats {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
             margin-top: 40px; position: relative; z-index: 10;
@@ -267,15 +301,25 @@
 
         .holo-stat-box {
             flex: 1; min-width: 140px; background: rgba(21, 25, 50, 0.8);
-            backdrop-filter: blur(20px); border: var(--glass-border);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 16px; padding: 20px; text-align: center;
             position: relative; overflow: hidden;
+            box-shadow: 0 0 15px rgba(74, 105, 255, 0.2);
+        }
+        .holo-stat-box::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 16px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
         }
         .holo-stat-box::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-            background: var(--gradient);
+            content: ''; position: absolute; top: -1px; left: -1px; width: calc(100% + 2px); height: calc(100% + 2px);
+            border-radius: 17px;
+            border: 1px solid var(--primary);
+            opacity: 0.5;
+            z-index: 1;
         }
-        .holo-num { font-size: 24px; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
+        .holo-num { font-size: 24px; font-weight: 800; color: var(--neon-blue); margin-bottom: 5px; text-shadow: 0 0 10px var(--primary); }
         .holo-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
         /* Trending */
@@ -305,7 +349,28 @@
         .cat-name { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .cat-count { font-size: 12px; color: var(--text-muted); }
 
-        /* Tables (Crucial for Mobile) */
+        /* Footer Decoration */
+        .home-footer {
+            margin-top: 80px; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center; color: var(--text-muted); font-size: 14px;
+        }
+        .social-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; }
+        .social-links a {
+            color: var(--text); font-size: 20px; transition: var(--transition);
+        }
+        .social-links a:hover { color: var(--accent); transform: scale(1.2); }
+
+        /* ================== ADVANCED TOOLS STYLES ================== */
+        .tools-wrapper { width: 90%; max-width: 800px; margin: 0 auto; }
+        .tool-section { background: var(--card); padding: 20px; border-radius: 16px; margin-bottom: 30px; border: var(--glass-border); }
+        .result-box {
+            background: rgba(0, 0, 0, 0.3); color: var(--accent); padding: 15px;
+            border-radius: 10px; margin-top: 15px; text-align: center; font-size: 20px; font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .cgpa-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px; }
+
+        /* Tables (Crucial for Mobile - used in Admin mainly now) */
         .data-table-container { 
             background: var(--card); 
             border-radius: 16px; 
@@ -314,17 +379,45 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
             margin-top: 15px;
         }
-        .table-scroll-wrapper {
-            overflow-x: auto; /* Enables horizontal scroll on mobile */
-            -webkit-overflow-scrolling: touch;
+        .table-scroll-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .data-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        .data-table th { background: rgba(0,0,0,0.3); padding: 15px; text-align: left; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+        .data-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text); }
+        .data-table tr:hover { background: rgba(255,255,255,0.05); cursor: pointer; }
+
+        /* ================== NEW LIBRARY DESIGN (Mobile Friendly) ================== */
+        .library-controls {
+            display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;
+            background: rgba(20, 25, 50, 0.4); padding: 20px; border-radius: 16px; border: var(--glass-border);
         }
-        .data-table { width: 100%; border-collapse: collapse; min-width: 600px; /* Force scroll on mobile */ }
+        @media(min-width: 600px) { .library-controls { flex-direction: row; align-items: center; } }
+
+        .pdf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .pdf-card { background: var(--card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; transition: var(--transition); position: relative; overflow: hidden; }
+        .pdf-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-color: var(--primary); }
+        .pdf-icon { font-size: 32px; color: var(--accent); margin-bottom: 15px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(245, 200, 76, 0.1); }
+        .pdf-title { font-size: 18px; font-weight: 700; margin-bottom: 5px; line-height: 1.3; }
+        .pdf-category { display: inline-block; background: rgba(74, 105, 255, 0.2); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+        .pdf-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; flex-grow: 1; }
+        .pdf-actions { display: flex; gap: 10px; margin-top: auto; }
+        
+        /* Tables (Crucial for Mobile - used in Admin mainly now) */
+        .data-table-container { 
+            background: var(--card); 
+            border-radius: 16px; 
+            border: var(--glass-border); 
+            overflow: hidden; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+            margin-top: 15px;
+        }
+        .table-scroll-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .data-table { width: 100%; border-collapse: collapse; min-width: 600px; }
         .data-table th { background: rgba(0,0,0,0.3); padding: 15px; text-align: left; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
         .data-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text); }
         .data-table tr:hover { background: rgba(255,255,255,0.05); cursor: pointer; }
 
         /* Profile */
-        .profile-container { width: 90%; max-width: 1000px; margin: 30px auto; display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .profile-container { width: 90%; max-width: 1000px; margin: 30px auto; display: grid; grid-template-columns:1fr; gap: 30px; }
         @media(min-width: 768px) { .profile-container { grid-template-columns: 300px 1fr; } }
 
         .profile-sidebar { 
@@ -387,78 +480,31 @@
         .notification.success { border-left: 5px solid var(--success); }
         .notification.error { border-left: 5px solid var(--danger); }
 
-        /* Chat & Fixes */
+        /* Chat */
         .chat-fab { position: fixed; right: 15px; bottom: 15px; width: 50px; height: 50px; border-radius: 50%; background: var(--gradient); color: #fff; display:flex; align-items:center; justify-content:center; z-index: 4000; box-shadow: 0 8px 20px rgba(0,0,0,0.3); cursor:pointer; font-size: 20px; }
         
-        /* Fixed Chat Modal CSS with Scroll Fix */
+        /* Mobile Responsive Chat */
         .chat-modal { 
             position: fixed; 
-            z-index: 9999; /* High z-index */
+            right: 10px; bottom: 80px; left: 10px; 
+            width: auto; height: 70vh; 
+            background: var(--card); 
+            border-radius: 12px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); 
+            z-index: 4001; 
             display: none; 
             flex-direction: column; 
-            background: var(--card); 
+            overflow: hidden; 
             border: var(--glass-border);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            overflow: hidden; /* Contains inner scroll */
         }
-
-        /* Desktop Chat Layout */
         @media(min-width: 768px) {
-            .chat-modal {
-                right: 20px; bottom: 90px; left: auto; top: auto;
-                width: 360px; height: 480px; border-radius: 12px;
-            }
+            .chat-modal { width: 360px; right: 20px; left: auto; bottom: 90px; height: 480px; }
         }
 
-        /* Mobile Chat Layout (Bottom Sheet) */
-        @media(max-width: 768px) {
-            .chat-modal {
-                top: auto; left: 0; right: 0; bottom: 0; 
-                width: 100%; height: 80vh; 
-                border-radius: 20px 20px 0 0;
-                transform: translateY(100%); /* Hidden state */
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            .chat-modal.show-mobile {
-                transform: translateY(0);
-            }
-            /* Specific fix for mobile send button size */
-            .chat-input .btn {
-                width: auto !important;
-                padding: 8px 12px !important;
-                font-size: 13px !important;
-            }
-        }
-
-        /* Common Chat Styles */
-        .chat-header { padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; align-items:center; flex-shrink: 0; background: var(--card); }
-        .chat-body { 
-            flex:1; 
-            padding: 10px; 
-            overflow-y: auto; 
-            display:flex; 
-            flex-direction:column; 
-            gap:8px; 
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain; /* THIS FIXES THE BACKGROUND SCROLL BUG */
-        }
-        .chat-input { 
-            padding: 10px; 
-            border-top: 1px solid rgba(255,255,255,0.04); 
-            display:flex; 
-            gap:8px; 
-            flex-shrink: 0; 
-            background: var(--card); 
-        }
-        .chat-input input { 
-            flex:1; 
-            padding:10px; 
-            border-radius:8px; 
-            border:1px solid rgba(255,255,255,0.06); 
-            background: rgba(255,255,255,0.02); 
-            color:var(--text); 
-            font-size: 14px; 
-        }
+        .chat-header { padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; align-items:center; flex-shrink: 0; }
+        .chat-body { flex:1; padding: 10px; overflow-y: auto; display:flex; flex-direction:column; gap:8px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+        .chat-input { padding: 10px; border-top: 1px solid rgba(255,255,255,0.04); display:flex; gap:8px; flex-shrink: 0; background: var(--card); }
+        .chat-input input { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:var(--text); font-size: 14px; }
         .chat-msg.user { align-self: flex-end; background: linear-gradient(90deg, rgba(74,105,255,0.14), rgba(139,92,246,0.08)); padding:8px 12px; border-radius:12px; max-width:80%; }
         .chat-msg.admin { align-self: flex-start; background: rgba(255,255,255,0.02); padding:8px 12px; border-radius:12px; max-width:80%; }
 
@@ -482,8 +528,7 @@
                 display: none; position: fixed; top: 60px; left: 0; width: 100%; 
                 background: rgba(10, 14, 39, 0.98); backdrop-filter: blur(10px);
                 flex-direction: column; padding: 20px; border-bottom: 1px solid var(--glass-border);
-                gap: 10px;
-                z-index: 999;
+                gap: 10px; z-index: 999;
             }
             nav ul.active { display: flex; animation: slideDown 0.3s ease; }
             @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -525,13 +570,14 @@
         <div class="logo" onclick="show('home')">
             <i class="fas fa-microchip"></i>
             <div style="display:flex; flex-direction:column; line-height:1;">
-                <span style="color:var(--accent)"></span>ENGINEERS HELPER
+                <span style="color:var(--accent)">E</span>NGINEERS HELPER
                 <h5>DEVLOPER ALI</h5>
             </div>
         </div>
         <ul id="navMenu">
             <li onclick="show('home')"><i class="fas fa-home"></i> Home</li>
             <li onclick="show('library')"><i class="fas fa-book"></i> Library</li>
+            <li onclick="show('advanced-tools')"><i class="fas fa-calculator"></i> Adv Tools</li>
             <li onclick="show('quiz')"><i class="fas fa-brain"></i> Quiz</li>
             <li onclick="show('notes')"><i class="fas fa-sticky-note"></i> Notes</li>
             <li id="navProfile" style="display:none;" onclick="show('profile')"><i class="fas fa-user-circle"></i> Profile</li>
@@ -620,12 +666,20 @@
     <section id="home" class="active">
         <div class="home-wrapper">
             
+            <!-- NEW Announcement Bar -->
+            <div class="announcement-bar" data-aos="fade-down">
+                <i class="fas fa-bullhorn announcement-icon"></i>
+                <div class="marquee-wrapper">
+                    <div class="marquee-content">🚀 Welcome to ENGINEERS HELPER V2.0! 📚 New Advanced Tools & Library Features Added. Start your journey today! 🚀</div>
+                </div>
+            </div>
+
             <!-- Hero Section -->
             <div class="hero-advanced" data-aos="fade-up">
-                <div class="hero-text">
+                <div class="hero-text-glass">
                     <div class="hero-badge"><i class="fas fa-rocket"></i> V 2.0 Is Live MAKE BY ALI</div>
                     <h1 class="hero-title">Master the <br>Future of <span style="color: var(--accent)">Tech</span></h1>
-                    <p class="hero-desc">Access premium PDFs, solve competitive quizzes, and track your progress with our advanced analytics dashboard. Start your journey today.</p>
+                    <p class="hero-desc">Access premium PDFs, use advanced tools, solve competitive quizzes, and track your progress with our advanced analytics dashboard. Start your journey today.</p>
                     <div class="hero-buttons">
                         <button class="btn btn-main glow-btn" onclick="checkAuthAndRedirect('library')"><i class="fas fa-book-open"></i> Explore Library</button>
                         <button class="btn btn-dark" onclick="checkAuthAndRedirect('quiz')"><i class="fas fa-play"></i> Start Quiz</button>
@@ -704,21 +758,76 @@
                 </div>
             </div>
 
+            <!-- New Footer -->
+            <div class="home-footer">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <p>&copy; 2024 ENGINEERS HELPER. Designed by Developer Ali.</p>
+            </div>
+
         </div>
     </section>
 
-    <!-- LIBRARY SECTION -->
+    <!-- ================== ADVANCED TOOLS SECTION ================== -->
+    <section id="advanced-tools">
+        <div class="tools-wrapper">
+            <h2 style="margin-bottom: 20px; font-size: 24px; text-align:center;">Advanced Engineering Tools</h2>
+            
+            <!-- Tool 1: Unit Converter -->
+            <div class="tool-section">
+                <h3 style="margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">Unit Converter</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                    <select id="unitType" onchange="updateUnitOptions()">
+                        <option value="length">Length</option>
+                        <option value="weight">Weight (Mass)</option>
+                        <option value="temp">Temperature</option>
+                    </select>
+                    <input type="number" id="unitValue" placeholder="Enter Value" step="any">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <select id="unitFrom"></select>
+                    <select id="unitTo"></select>
+                </div>
+                <button class="btn btn-main" onclick="convertUnit()" style="width: 100%;">Convert</button>
+                <div id="unitResult" class="result-box">Result will appear here</div>
+            </div>
+
+            <!-- Tool 2: CGPA Calculator -->
+            <div class="tool-section">
+                <h3 style="margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">CGPA Calculator (10.0 Scale)</h3>
+                <div id="cgpaInputs" style="margin-bottom: 15px;">
+                    <!-- Dynamic inputs will go here -->
+                </div>
+                <button class="btn btn-dark" onclick="addCGPARow()" style="width: 100%; margin-bottom: 15px;">+ Add Subject</button>
+                <button class="btn btn-main" onclick="calculateCGPA()" style="width: 100%;">Calculate CGPA</button>
+                <div id="cgpaResult" class="result-box">Result will appear here</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================== LIBRARY SECTION ================== -->
     <section id="library">
         <div style="width: 90%; max-width: 1200px; margin: 0 auto;">
             <h2 style="margin-bottom: 20px; font-size: 24px;">PDF Library</h2>
-            <input type="text" id="searchInput" placeholder="Search PDFs by title or category..." style="margin-bottom: 20px; max-width: 100%;">
-            <div class="data-table-container">
-                <div class="table-scroll-wrapper">
-                    <table class="data-table">
-                        <thead><tr><th>Title</th><th>Category</th></tr></thead>
-                        <tbody id="pdfList"><tr><td colspan="2" style="text-align: center;">Loading...</td></tr></tbody>
-                    </table>
-                </div>
+            
+            <div class="library-controls">
+                <input type="text" id="searchInput" placeholder="Search PDFs by title..." style="margin-bottom: 0;">
+                <select id="categoryFilter" onchange="filterLibrary()">
+                    <option value="All">All Categories</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Geography">Geography</option>
+                    <option value="History">History</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Maths">Maths</option>
+                </select>
+            </div>
+
+            <div class="pdf-grid" id="pdfList">
+                <div style="text-align: center; width: 100%; grid-column: 1 / -1; padding: 20px; color: var(--text-muted);">Loading...</div>
             </div>
         </div>
     </section>
@@ -852,10 +961,28 @@
                         <h3>Add New PDF</h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
                             <input type="text" id="adminPdfTitle" placeholder="PDF Title">
-                            <input type="text" id="adminPdfCategory" placeholder="Category">
+                            <select id="adminPdfCategory" style="background: rgba(255,255,255,0.03);">
+                                <option value="">Select Category</option>
+                                <option value="Programming">Programming</option>
+                                <option value="Geography">Geography</option>
+                                <option value="History">History</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Maths">Maths</option>
+                                <option value="General">General</option>
+                            </select>
                         </div>
-                        <textarea id="adminPdfDesc" placeholder="Description" style="margin: 15px 0; height: 80px;"></textarea>
-                        <input type="url" id="adminPdfUrl" placeholder="Direct PDF Link (https://...)" style="margin-bottom: 15px;">
+                        <textarea id="adminPdfDesc" placeholder="Description (Short note about PDF)" style="margin: 15px 0; height: 80px;"></textarea>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label style="display:block; margin-bottom:8px; font-weight:600; font-size:14px;">Upload PDF (Supabase)</label>
+                            <input type="file" id="adminPdfFile" accept="application/pdf" style="background: rgba(255,255,255,0.05);">
+                        </div>
+
+                        <div style="margin-bottom: 15px; position: relative;">
+                            <label style="display:block; margin-bottom:8px; font-weight:600; font-size:14px;">Or Paste Direct Link</label>
+                            <input type="url" id="adminPdfUrl" placeholder="https://...">
+                        </div>
+
                         <button class="btn btn-main" onclick="adminAddPDF()"><i class="fas fa-plus"></i> Add PDF</button>
                     </div>
                     <div class="data-table-container">
@@ -979,6 +1106,7 @@
             if(id === 'library') loadLibrary();
             if(id === 'quiz') loadQuizFromDB();
             if(id === 'notes') loadNotes();
+            if(id === 'advanced-tools') initAdvancedTools();
             if(id === 'profile' && auth.currentUser) loadProfileStats();
         }
 
@@ -988,25 +1116,27 @@
         }
 
         // --- AUTH ---
-        auth.onAuthStateChanged((user) => {
+        // FIX: Made this callback async to support await
+        auth.onAuthStateChanged(async (user) => {
             if (user) {
                 document.getElementById('navLogin').style.display = 'none';
                 document.getElementById('navProfile').style.display = 'flex';
                 if(user.email === ADMIN_EMAIL) document.getElementById('navAdmin').style.display = 'flex';
 
-                rtdb.ref('users/' + user.uid).once('value').then(snap => {
-                    const data = snap.val();
-                    if(data && !data.isBlocked) {
-                        document.getElementById('profileName').innerText = data.name;
-                        document.getElementById('profileEmail').innerText = data.email;
-                        if(data.customID) document.getElementById('profileUid').innerText = data.customID;
-                        if(data.photo) document.getElementById('profilePic').src = data.photo;
-                    } else if (data && data.isBlocked) {
-                        auth.signOut(); alert('You are blocked.');
-                    }
-                });
+                // Now await is valid here
+                const snap = await rtdb.ref('users/' + user.uid).once('value');
+                const data = snap.val();
+                
+                if(data && !data.isBlocked) {
+                    document.getElementById('profileName').innerText = data.name;
+                    document.getElementById('profileEmail').innerText = data.email;
+                    if(data.customID) document.getElementById('profileUid').innerText = data.customID;
+                    if(data.photo) document.getElementById('profilePic').src = data.photo;
+                } else if (data && data.isBlocked) {
+                    auth.signOut(); alert('You are blocked.');
+                }
 
-                ensureSupabaseProfile(user);
+                await ensureSupabaseProfile(user);
                 loadMyNotes();
             } else {
                 document.getElementById('navLogin').style.display = 'flex';
@@ -1057,24 +1187,27 @@
                 .catch(err => showNotification(err.message, 'error'));
         }
 
-        function handleGoogleLogin() {
+        async function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    const userRef = rtdb.ref('users/' + result.user.uid);
-                    userRef.once('value').then(snapshot => {
-                        let data = snapshot.val();
-                        let customID = data ? data.customID : generateUnique5DigitID();
-                        let joinedAt = data ? data.joinedAt : Date.now();
-                        userRef.set({
-                            name: result.user.displayName, email: result.user.email, photo: result.user.photoURL, role: 'user', isBlocked: false, customID: customID, joinedAt: joinedAt
-                        });
-                        ensureSupabaseProfile(result.user);
-                        show('home');
-                        showNotification('Logged in', 'success');
-                    });
-                })
-                .catch(err => showNotification(err.message, 'error'));
+            try {
+                const result = await auth.signInWithPopup(provider);
+                
+                const userRef = rtdb.ref('users/' + result.user.uid);
+                const snapshot = await userRef.once('value');
+                const data = snapshot.val();
+                let customID = data ? data.customID : generateUnique5DigitID();
+                let joinedAt = data ? data.joinedAt : Date.now();
+                
+                await userRef.set({
+                    name: result.user.displayName, email: result.user.email, photo: result.user.photoURL, role: 'user', isBlocked: false, customID: customID, joinedAt: joinedAt
+                });
+                
+                await ensureSupabaseProfile(result.user);
+                show('home');
+                showNotification('Logged in', 'success');
+            } catch (err) {
+                showNotification(err.message, 'error');
+            }
         }
 
         function handleLogout() {
@@ -1084,20 +1217,133 @@
             });
         }
 
+        // --- ADVANCED TOOLS LOGIC ---
+        function initAdvancedTools() {
+            updateUnitOptions();
+            // Add one initial CGPA row
+            document.getElementById('cgpaInputs').innerHTML = '';
+            addCGPARow();
+        }
+
+        function updateUnitOptions() {
+            const type = document.getElementById('unitType').value;
+            const fromSel = document.getElementById('unitFrom');
+            const toSel = document.getElementById('unitTo');
+            fromSel.innerHTML = '';
+            toSel.innerHTML = '';
+
+            const options = {
+                'length': ['mm', 'cm', 'm', 'km', 'inch', 'ft'],
+                'weight': ['mg', 'g', 'kg', 'lb', 'oz'],
+                'temp': ['Celsius', 'Fahrenheit', 'Kelvin']
+            };
+            options[type].forEach(u => {
+                const opt1 = document.createElement('option');
+                opt1.value = u; opt1.innerText = u;
+                const opt2 = document.createElement('option');
+                opt2.value = u; opt2.innerText = u;
+                fromSel.appendChild(opt1);
+                toSel.appendChild(opt2);
+            });
+        }
+
+        function convertUnit() {
+            const type = document.getElementById('unitType').value;
+            const val = parseFloat(document.getElementById('unitValue').value);
+            const from = document.getElementById('unitFrom').value;
+            const to = document.getElementById('unitTo').value;
+            const resultBox = document.getElementById('unitResult');
+
+            if(isNaN(val)) return showNotification('Please enter a number', 'error');
+            if(from === to) { resultBox.innerText = val + ' ' + to; return; }
+
+            let result = 0;
+
+            // Simple conversion logic relative to base unit (meter, kg, celsius)
+            if (type === 'length') {
+                const toMeters = { 'mm': 0.001, 'cm': 0.01, 'm': 1, 'km': 1000, 'inch': 0.0254, 'ft': 0.3048 };
+                const valInMeters = val * toMeters[from];
+                result = valInMeters / toMeters[to];
+            } else if (type === 'weight') {
+                const toKg = { 'mg': 0.000001, 'g': 0.001, 'kg': 1, 'lb': 0.453592, 'oz': 0.0283495 };
+                const valInKg = val * toKg[from];
+                result = valInKg / toKg[to];
+            } else if (type === 'temp') {
+                let valInC;
+                if (from === 'Celsius') valInC = val;
+                else if (from === 'Fahrenheit') valInC = (val - 32) * 5/9;
+                else if (from === 'Kelvin') valInC = val - 273.15;
+
+                let finalC;
+                if (to === 'Celsius') finalC = valInC;
+                else if (to === 'Fahrenheit') finalC = (valInC * 9/5) + 32;
+                else if (to === 'Kelvin') finalC = valInC + 273.15;
+                
+                result = finalC;
+            }
+
+            resultBox.innerText = result.toFixed(4) + ' ' + to;
+        }
+
+        function addCGPARow() {
+            const div = document.createElement('div');
+            div.className = 'cgpa-row';
+            div.innerHTML = `
+                <input type="text" class="cgpa-subject" placeholder="Subject (Optional)" style="padding:10px;">
+                <input type="number" class="cgpa-credits" placeholder="Credits (Optional)" style="padding:10px;" min="0" value="1" title="If no credit system, enter 1">
+                <input type="number" class="cgpa-marks" placeholder="Marks Obtained" style="padding:10px;">
+                <input type="number" class="cgpa-total" placeholder="Total Marks" style="padding:10px;">
+                <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
+            `;
+            document.getElementById('cgpaInputs').appendChild(div);
+        }
+
+        function calculateCGPA() {
+            const rows = document.querySelectorAll('.cgpa-row');
+            let totalPoints = 0;
+            let totalCredits = 0;
+
+            rows.forEach(row => {
+                const marks = parseFloat(row.querySelector('.cgpa-marks').value);
+                const total = parseFloat(row.querySelector('.cgpa-total').value);
+                const credits = parseFloat(row.querySelector('.cgpa-credits').value) || 1; // Default 1 if no credit system
+
+                if (!isNaN(marks) && !isNaN(total) && total !== 0) {
+                    // Calculate Points for this subject (Out of 10.0 scale)
+                    // Formula: (Marks / Total) * 10.0
+                    const points = (marks / total) * 10.0;
+                    
+                    // Accumulate weighted points
+                    totalPoints += (points * credits);
+                    totalCredits += credits;
+                }
+            });
+
+            const cgpa = totalPoints / totalCredits;
+            const cgpaBox = document.getElementById('cgpaResult');
+            
+            if (isNaN(cgpa) || totalCredits === 0) {
+                cgpaBox.innerText = "Invalid Data";
+            } else {
+                cgpaBox.innerText = "CGPA: " + cgpa.toFixed(2) + " / 10.0";
+                showNotification("Calculated Successfully", "success");
+            }
+        }
+
         // --- FEATURES ---
         function seedDatabase() {
-            rtdb.ref('pdfs').set({ "pdf1": { title: "Python Basics", category: "Programming", url: "#", views: 0 }, "pdf2": { title: "Geography Maps", category: "Geography", url: "#", views: 0 }, "pdf3": { title: "History Timeline", category: "History", url: "#", views: 0 } });
+            rtdb.ref('pdfs').set({ "pdf1": { title: "Python Basics", category: "Programming", url: "#", views: 0, desc: "Introduction to Python language." }, "pdf2": { title: "Geography Maps", category: "Geography", url: "#", views: 0, desc: "World map for IAS students." }, "pdf3": { title: "History Timeline", category: "History", url: "#", views: 0, desc: "Indian independence timeline." } });
             rtdb.ref('quizzes').set({ "q1": { q: "What is 2+2?", options: ["3", "4", "5", "6"], correct: 1 }, "q2": { q: "Capital of France?", options: ["Berlin", "Madrid", "Paris", "Rome"], correct: 2 } });
             showNotification("Database Seeded", "success");
             setTimeout(() => window.location.reload(), 1500);
         }
 
-        // --- LIBRARY SEARCH & CLICK LOGIC ---
+        // --- LIBRARY CARD LOGIC ---
         function loadLibrary() {
             rtdb.ref('pdfs').once('value').then(snap => {
                 const data = snap.val();
                 if(!data) { 
-                    document.getElementById('pdfList').innerHTML = '<tr><td colspan="2">No PDFs</td></tr>'; 
+                    document.getElementById('pdfList').innerHTML = '<div style="text-align: center; width: 100%; grid-column: 1 / -1; padding: 20px; color: var(--text-muted);">No PDFs found.</div>'; 
                     return; 
                 }
                 allPdfsData = [];
@@ -1111,30 +1357,47 @@
             searchInput.value = ''; 
             searchInput.removeEventListener('input', filterLibrary); 
             searchInput.addEventListener('input', filterLibrary); 
+            
+            const categoryFilter = document.getElementById('categoryFilter');
+            categoryFilter.value = 'All';
+            categoryFilter.removeEventListener('change', filterLibrary);
+            categoryFilter.addEventListener('change', filterLibrary);
         }
 
         function renderLibrary(data) {
             const list = document.getElementById('pdfList');
             list.innerHTML = '';
             if(data.length === 0) { 
-                list.innerHTML = '<tr><td colspan="2">No PDFs found matching your search.</td></tr>'; 
+                list.innerHTML = '<div style="text-align: center; width: 100%; grid-column: 1 / -1; padding: 20px; color: var(--text-muted);">No PDFs found.</div>'; 
                 return; 
             }
             data.forEach(item => {
+                // Render Card with NEW Logic
+                // 1. View: target="_blank" (Opens new tab, doesn't affect old window)
+                // 2. Download: JS fetch/blob (Forces file save on mobile)
                 list.innerHTML += `
-                    <tr onclick="window.open('${item.url}', '_blank')" style="cursor: pointer;">
-                        <td><strong>${item.title}</strong></td>
-                        <td>${item.category}</td>
-                    </tr>
+                    <div class="pdf-card">
+                        <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+                        <div class="pdf-title">${escapeHtml(item.title || 'Untitled')}</div>
+                        <div class="pdf-category">${escapeHtml(item.category || 'General')}</div>
+                        <div class="pdf-desc">${escapeHtml(item.desc || '')}</div>
+                        <div class="pdf-actions">
+                            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="btn btn-main btn-sm" style="display:inline-flex;"><i class="fas fa-eye"></i> View</a>
+                            <button class="btn btn-dark btn-sm" style="display:inline-flex;" onclick="downloadPdf('${item.url}', '${item.title}')"><i class="fas fa-download"></i> Download</button>
+                        </div>
+                    </div>
                 `;
             });
         }
 
-        function filterLibrary(e) {
-            const term = e.target.value.toLowerCase();
+        function filterLibrary() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const cat = document.getElementById('categoryFilter').value;
+
             const filtered = allPdfsData.filter(item => {
-                return item.title.toLowerCase().includes(term) || 
-                       item.category.toLowerCase().includes(term);
+                const matchesSearch = (item.title || '').toLowerCase().includes(term) || (item.desc || '').toLowerCase().includes(term);
+                const matchesCategory = cat === 'All' || (item.category === cat);
+                return matchesSearch && matchesCategory;
             });
             renderLibrary(filtered);
         }
@@ -1304,23 +1567,63 @@
                 const data = snap.val(); if(!data) return;
                 Object.keys(data).forEach(key => {
                     const item = data[key];
-                    list.innerHTML += `<tr><td>${item.title}</td><td>${item.category}</td><td>${item.views || 0}</td><td><button onclick="deletePDF('${key}')" style="color:var(--danger); background:none; border:none; cursor:pointer;"><i class="fas fa-trash"></i></button></td></tr>`;
+                    list.innerHTML += `<tr><td>${item.title}</td><td contenteditable="true" onblur="updateCategory('${key}', this.innerText)" onkeydown="if(event.key==='Enter'){ event.preventDefault(); this.blur(); }" style="cursor:pointer; border:1px solid rgba(255,255,255,0.1); border-radius:5px; padding:5px;">${item.category}</td><td>${item.views || 0}</td><td><button onclick="deletePDF('${key}')" style="color:var(--danger); background:none; border:none; cursor:pointer;"><i class="fas fa-trash"></i></button></td></tr>`;
                 });
             });
         }
 
-        function adminAddPDF() {
+        function updateCategory(key, newVal) {
+            if(!newVal) return;
+            rtdb.ref('pdfs/' + key + '/category').set(newVal).then(() => {
+                showNotification('Category Updated', 'success');
+                loadAdminPDFs();
+            }).catch(err => showNotification('Update Failed', 'error'));
+        }
+
+        async function adminAddPDF() {
             const title = document.getElementById('adminPdfTitle').value;
             const cat = document.getElementById('adminPdfCategory').value;
             const desc = document.getElementById('adminPdfDesc').value;
-            const url = document.getElementById('adminPdfUrl').value;
-            if(!title || !url) return showNotification("Fill required fields", "error");
-            rtdb.ref('pdfs').push({ title, category: cat, desc, url, views: 0 }).then(() => {
+            const urlInput = document.getElementById('adminPdfUrl').value;
+            const fileInput = document.getElementById('adminPdfFile');
+
+            if(!title || !cat) return showNotification("Title and Category are required", "error");
+
+            let finalUrl = urlInput;
+            
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                showNotification('Uploading PDF...', 'info');
+                
+                const path = `library/${Date.now()}_${file.name}`;
+                try {
+                    const { data: uploadData, error: uploadErr } = await supabaseClient.storage.from('profile-pics').upload(path, file, { contentType: file.type, upsert: false });
+                    
+                    if(uploadErr) {
+                        console.error('Upload error', uploadErr);
+                        return showNotification("Upload failed: " + uploadErr.message, 'error');
+                    }
+                    
+                    const { data: urlData } = await supabaseClient.storage.from('profile-pics').getPublicUrl(path);
+                    finalUrl = urlData.publicUrl;
+                    
+                } catch (err) {
+                    console.error('Unexpected upload error', err);
+                    return showNotification("Upload failed (See Console)", 'error');
+                }
+            } else if (!urlInput) {
+                return showNotification("Please upload a file or paste a URL", "error");
+            }
+
+            rtdb.ref('pdfs').push({ title, category: cat, desc, url: finalUrl, views: 0 }).then(() => {
                 showNotification("PDF Added", "success");
                 document.getElementById('adminPdfTitle').value = "";
+                document.getElementById('adminPdfCategory').value = "";
+                document.getElementById('adminPdfDesc').value = "";
                 document.getElementById('adminPdfUrl').value = "";
+                document.getElementById('adminPdfFile').value = "";
                 loadAdminPDFs();
-            });
+            }).catch(err => showNotification("Failed to save info", 'error'));
         }
 
         function deletePDF(key) {
@@ -1340,6 +1643,31 @@
                     list.innerHTML += `<tr><td>${q.q}</td><td>${String.fromCharCode(65 + q.correct)}</td><td><button onclick="deleteQuestion('${key}')" style="color:var(--danger); background:none; border:none; cursor:pointer;"><i class="fas fa-trash"></i></button></td></tr>`;
                 });
             });
+        }
+
+        function adminAddQuestion() {
+            const qText = document.getElementById('quizQ').value;
+            const opt0 = document.getElementById('opt0').value;
+            const opt1 = document.getElementById('opt1').value;
+            const opt2 = document.getElementById('opt2').value;
+            const opt3 = document.getElementById('opt3').value;
+            let correctVal = 0;
+            document.querySelectorAll('input[name="correctOpt"]').forEach(r => { if(r.checked) correctVal = parseInt(r.value); });
+            if(!qText || !opt0 || !opt1 || !opt2 || !opt3) return showNotification("Fill all options", "error");
+            rtdb.ref('quizzes').push({ q: qText, options: [opt0, opt1, opt2, opt3], correct: correctVal }).then(() => {
+                showNotification("Question Added", "success");
+                document.getElementById('quizQ').value = "";
+                ['opt0','opt1','opt2','opt3'].forEach(id => document.getElementById(id).value = "");
+                loadAdminQuiz();
+            });
+        }
+
+        function deleteQuestion(key) {
+            if(confirm("Delete this question?")) {
+                rtdb.ref('quizzes/' + key).remove().then(() => {
+                    showNotification("Deleted", "success"); loadAdminQuiz();
+                });
+            }
         }
 
         // ---------------- SUPABASE HELPERS ------------------
@@ -1399,31 +1727,6 @@
             rtdb.ref('users/' + uid + '/photo').set(fallback);
             document.getElementById('profilePic').src = fallback;
             showNotification('Avatar removed', 'success');
-        }
-
-        function adminAddQuestion() {
-            const qText = document.getElementById('quizQ').value;
-            const opt0 = document.getElementById('opt0').value;
-            const opt1 = document.getElementById('opt1').value;
-            const opt2 = document.getElementById('opt2').value;
-            const opt3 = document.getElementById('opt3').value;
-            let correctVal = 0;
-            document.querySelectorAll('input[name="correctOpt"]').forEach(r => { if(r.checked) correctVal = parseInt(r.value); });
-            if(!qText || !opt0 || !opt1 || !opt2 || !opt3) return showNotification("Fill all options", "error");
-            rtdb.ref('quizzes').push({ q: qText, options: [opt0, opt1, opt2, opt3], correct: correctVal }).then(() => {
-                showNotification("Question Added", "success");
-                document.getElementById('quizQ').value = "";
-                ['opt0','opt1','opt2','opt3'].forEach(id => document.getElementById(id).value = "");
-                loadAdminQuiz();
-            });
-        }
-
-        function deleteQuestion(key) {
-            if(confirm("Delete this question?")) {
-                rtdb.ref('quizzes/' + key).remove().then(() => {
-                    showNotification("Deleted", "success"); loadAdminQuiz();
-                });
-            }
         }
 
         async function loadAdminUsers() {
@@ -1506,7 +1809,7 @@
                 Object.keys(data).reverse().forEach(nid => {
                     const n = data[nid];
                     const date = new Date(n.updatedAt || n.createdAt || Date.now()).toLocaleString();
-                    container.innerHTML += `<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong style="font-size:14px;">${escapeHtml(n.title||'Untitled')}</strong><small style="color:var(--text-muted);font-size:11px;">${date}</small></div><p style="white-space:pre-wrap;font-size:13px;">${escapeHtml(n.content||'')}</p><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn btn-danger" onclick="adminDeleteNote('${uid}','${nid}')" style="font-size:11px;padding:5px 8px; width:auto;">Delete</button></div></div>`;
+                    container.innerHTML += `<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong style="font-size:14px;">${escapeHtml(n.title||'Untitled')}</strong><small style="color:var(--text-muted);font-size:11px;">${date}</small></div><p style="white-space:pre-wrap;font-size:13px;">${escapeHtml(n.content||'')}</p><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn btn-danger" onclick="adminDeleteNote('${uid}','${nid}')" style="font-size:11px;padding:5px 8px; width:auto;">Delete</button></div>`;
                 });
             });
         }
@@ -1539,19 +1842,16 @@
             const modal = document.getElementById('supportChatModal');
             if(!modal) return;
             if(modal.style.display === 'flex') {
-                // Close animation
                 if(window.innerWidth <= 768) {
                     modal.classList.remove('show-mobile');
                     setTimeout(() => modal.style.display = 'none', 300);
                 } else {
                     modal.style.display = 'none';
                 }
-                
                 if(window._supportUnsub) { window._supportUnsub.off(); window._supportUnsub = null; }
             } else {
                 if(!auth.currentUser) { showNotification('Please login to chat', 'info'); show('auth'); return; }
                 modal.style.display = 'flex';
-                // Slight delay to allow display flex to apply before adding class for transition
                 setTimeout(() => modal.classList.add('show-mobile'), 10);
                 loadSupportConversation(auth.currentUser.uid);
             }
